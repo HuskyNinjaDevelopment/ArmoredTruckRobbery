@@ -197,6 +197,9 @@ namespace ArmoredTruckRobbery
             _backupAlpha.Task.ClearAllImmediately();
             await BaseScript.Delay(100);
 
+            _backupAlpha.AttachBlip();
+            _backupBravo.AttachBlip();
+
             _backupAlpha.Task.LeaveVehicle();
             _backupBravo.Task.LeaveVehicle();
             while (_backupBravo.IsInVehicle() || _backupAlpha.IsInVehicle()) { await BaseScript.Delay(10); }
@@ -312,11 +315,8 @@ namespace ArmoredTruckRobbery
             while (!isFound) { isFound = API.GetNthClosestVehicleNode(_endCoords.X, _endCoords.Y, _endCoords.Z, new Random().Next(50, 250), ref _supportCarCoords, 0, 0, 0); await BaseScript.Delay(5); }
 
             _supportVehicle = await SpawnVehicle(VehicleHash.Burrito3, _supportCarCoords);
-            _supportVehicle.AttachBlip();
             _backupAlpha = await CreateCriminal(_supportCarCoords.Around(5f));
-            _backupAlpha.AttachBlip();
             _backupBravo = await CreateCriminal(_supportCarCoords.Around(5f));
-            _backupBravo.AttachBlip();
 
             while (!_backupAlpha.Exists() || !_backupBravo.Exists()) { await BaseScript.Delay(1); }
             _backupAlpha.Task.WarpIntoVehicle(_supportVehicle, VehicleSeat.Driver);
